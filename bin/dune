@@ -1,0 +1,14 @@
+(executable
+ (public_name mmsc_interpreter)
+ (name main)
+ (libraries mmsc_interpreter)
+ (modules main lexer parser astNode)
+)
+
+(ocamllex
+  (modules lexer)
+)
+
+(ocamlyacc
+  (modules parser)
+)

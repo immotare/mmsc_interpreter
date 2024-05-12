@@ -1,0 +1,2 @@
+(library
+ (name mmsc_interpreter))
