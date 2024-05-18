@@ -21,22 +21,19 @@ type expr =
   | Arith of arith
   | Atom of atom
 
-type keyword =
-  | Define
-  | If
-  | Lambda
-
 type params = identifier list
 type define_stmt =
   | Bind of identifier * expr
   | Func of identifier * params * (expr list)
+
+type lambda_stmt = params * (expr list)
 
 type t = 
   | Atom of atom
   | Arith of arith
   | Define of define_stmt
   | If
-  | Lambda
+  | Lambda of lambda_stmt
 
 module PPrint = struct
   let atom_to_string (a: atom) =
@@ -75,10 +72,16 @@ module PPrint = struct
                                   (params_to_string params)
       in "Define:\n" ^ s
 
+  let lambda_to_string (a: lambda_stmt) =
+    let (params, _) = a
+    in
+    Printf.sprintf "Lambda:\n\tParams:%s\n\tExpr:()" (params_to_string params) 
+
   let to_string t =
     match t with
       | Atom(a) -> atom_to_string a
       | Arith(a) -> arith_to_string a
       | Define(a) -> define_to_string a
+      | Lambda(a) -> lambda_to_string a
       | _ -> ""
 end

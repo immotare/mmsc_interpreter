@@ -21,6 +21,7 @@ expr:
   | arith { Arith($1) }
   | atom { Atom($1) }
   | define { Define($1) }
+  | lambda { Lambda($1) }
 ;
 atom:
   | INT { Mint($1) }
@@ -39,6 +40,9 @@ arith_op:
   | FLOAT { OpFloat($1) }
   | IDENTIFIER { OpIdentifier($1) }
   | arith { OpArith($1) }
+;
+lambda:
+  | LPAREN LAMBDA LPAREN params RPAREN body RPAREN { ($4, $6) }
 ;
 define:
   | LPAREN DEFINE LPAREN identifier params RPAREN body RPAREN { Func($4, $5, $7) }
