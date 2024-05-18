@@ -20,9 +20,7 @@ main:
 expr:
   | arith { Arith($1) }
   | atom { Atom($1) }
-  | DEFINE { Keyword(Define) }
-  | IF { Keyword(If) }
-  | LAMBDA { Keyword(Lambda) }
+  | define { Define($1) }
 ;
 atom:
   | INT { Mint($1) }
@@ -41,4 +39,23 @@ arith_op:
   | FLOAT { OpFloat($1) }
   | IDENTIFIER { OpIdentifier($1) }
   | arith { OpArith($1) }
+;
+define:
+  | LPAREN DEFINE LPAREN identifier params RPAREN body RPAREN { Func($4, $5, $7) }
+  | LPAREN DEFINE identifier value RPAREN { Bind($3, $4) }
+;
+identifier:
+  | IDENTIFIER { $1 }
+;
+params:
+  | identifier params { $1::$2 }
+  | identifier { [$1] }
+;
+body:
+  | value body { $1::$2 }
+  | value { [$1] }
+;
+value:
+  | atom { Atom($1) }
+  | arith { Arith($1) }
 ;

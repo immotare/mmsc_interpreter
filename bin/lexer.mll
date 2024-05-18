@@ -33,4 +33,4 @@ rule token = parse
   | "lambda" { LAMBDA }
   | identifier as id { IDENTIFIER(id) }
   | eof { raise EOF }
-  | _ as c { Printf.printf "unexpected caracter: %C" c; token lexbuf }
+  | _ as c { Printf.printf "unexpected character: %C" c; token lexbuf }
