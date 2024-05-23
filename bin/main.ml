@@ -5,11 +5,14 @@ let () =
       let node_cnt = ref 0 in
       while true do
         let result = Parser.main Lexer.token lexbuf in
-        print_string ("<" ^ (string_of_int !node_cnt) ^ ">");
+        print_string "-------------------------";
         print_newline();
-        print_string (AstNode.PPrint.to_string result);
+        Printf.printf "<%d>" !node_cnt;
+        print_newline();
+        print_string (AstNode.PPrint.sprint_node result);
         print_newline();
         print_string "-------------------------";
+        print_newline();
         print_newline();
         node_cnt := !node_cnt + 1;
       done
