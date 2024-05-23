@@ -62,4 +62,5 @@ body:
 value:
   | atom { Atom($1) }
   | arith { Arith($1) }
+  | lambda { Lambda($1) }
 ;
