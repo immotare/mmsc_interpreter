@@ -24,13 +24,22 @@ type expr =
   | Atom of atom
   | Lambda of lambda_stmt
   | Define of define_stmt
-  | If
+  | Pred of pred
+  | If of if_stmt
   and 
   define_stmt =
   | Bind of identifier * expr
   | Func of identifier * params * (expr list)
   and
   lambda_stmt = params * (expr list)
+  and pred = 
+  | And of expr * expr
+  | Or of expr * expr
+  | Gt of expr *  expr
+  | Lt of expr * expr
+  | Eq of expr * expr
+  and
+  if_stmt = pred * expr * expr
 
 type t = expr
 

@@ -2,7 +2,7 @@
  (public_name mmsc_interpreter)
  (name main)
  (libraries mmsc_interpreter)
- (modules main lexer parser astNode)
+ (modules main lexer parser astNode eval)
 )
 
 (ocamllex
