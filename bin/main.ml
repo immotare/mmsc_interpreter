@@ -20,6 +20,6 @@ let () =
       done
     with
       Lexer.EOF -> 
-        let ss = List.map Eval.sprint_value (Eval.eval !nodes) in
-        List.iter (fun s -> print_string s; print_newline(); ) ss
+        let result_env = Eval.eval !nodes in
+        Eval.print_env result_env
   )()

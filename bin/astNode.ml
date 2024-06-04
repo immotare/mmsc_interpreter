@@ -5,6 +5,7 @@ type atom =
   | Mfloat of float
   | Mstr of string
   | Midentifier of string
+  | Mbool of bool
 
 type arith =
   | Plus of arith_op * arith_op
@@ -35,11 +36,11 @@ type expr =
   and pred = 
   | And of expr * expr
   | Or of expr * expr
-  | Gt of expr *  expr
+  | Gt of expr * expr
   | Lt of expr * expr
   | Eq of expr * expr
   and
-  if_stmt = pred * expr * expr
+  if_stmt = expr * expr * expr
 
 type t = expr
 
@@ -74,6 +75,7 @@ end = struct
       | Mfloat(f) -> "Float:" ^ string_of_float(f)
       | Mstr(s) -> "String:" ^ s
       | Midentifier(id) -> "Identifier:" ^ id
+      | Mbool(b) -> "Boolean:" ^ string_of_bool(b)
 
   let rec arith_op_to_ppnode a =
     match a with
@@ -101,7 +103,8 @@ end = struct
     | Arith(a) -> arith_to_ppnode a
     | Define(a) -> define_to_ppnode a
     | Lambda(a) -> lambda_to_ppnode a
-    | _ -> Leaf("")
+    | If(a) -> if_to_ppnode a
+    | Pred(a) -> pred_to_ppnode a
     and
     define_to_ppnode a =
     match a with
@@ -123,6 +126,23 @@ end = struct
     Node("Lambda:", [
       Leaf(Printf.sprintf "Params:%s" (params_to_string params));
       Node("Exprs:", List.map (fun a -> to_ppnode a) exprs)
+    ])
+    and
+    pred_to_ppnode a =
+    match a with
+    | And(e1, e2) -> Node("And:", [to_ppnode e1; to_ppnode e2])
+    | Or(e1, e2) -> Node("Or:", [to_ppnode e1; to_ppnode e2])
+    | Gt(e1, e2) -> Node("Gt:", [to_ppnode e1; to_ppnode e2])
+    | Lt(e1, e2) -> Node("Lt:", [to_ppnode e1; to_ppnode e2])
+    | Eq(e1, e2) -> Node("Eq:", [to_ppnode e1; to_ppnode e2])
+    and
+    if_to_ppnode a =
+    let (pred, expr1, expr2) = a
+    in
+    Node("If:", [
+      to_ppnode pred;
+      to_ppnode expr1;
+      to_ppnode expr2;
     ])
 
     let sprint_node e = sprint_ppnodes (to_ppnode e) 0

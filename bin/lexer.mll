@@ -22,10 +22,17 @@ rule token = parse
   | digit as i { INT(int_of_string i) }
   | float as f { FLOAT(float_of_string f) }
   | str as s { STR(s) }
+  | "#f" { BOOL(false) }
+  | "#t" { BOOL(true) }
   | '+' { PLUS }
   | '-' { MINUS }
   | '*' { MUL }
   | '/' { DIV }
+  | "and" { AND }
+  | "or" { OR }
+  | ">" { GT }
+  | "<" { LT }
+  | "=" { EQ }
   | '(' { LPAREN }
   | ')' { RPAREN }
   | "define" { DEFINE }
