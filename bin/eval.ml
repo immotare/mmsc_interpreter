@@ -172,7 +172,7 @@ let eval (ts: AstNode.t list) =
     match d with
     | Bind(id, expr) -> 
         let (v, ne) = eval_iter expr env in
-        (Bool(true), append_entry_into_frame ne (id, v) 0)
+        (Str(id), append_entry_into_frame ne (id, v) 0)
     | Func(_, _, _) ->
       raise InvalidExpr
   and
@@ -224,8 +224,12 @@ let eval (ts: AstNode.t list) =
   if (List.length params = List.length params_value) then
     let new_frame = List.combine params params_value in
     let env_ref = ref (Env(new_frame, env)) in
-    let result = List.map (fun expr -> (let (v, ne) = eval_iter expr !env_ref in env_ref := ne; v)) body in
-    List.hd result 
+    let result = List.map
+                  (fun expr -> 
+                    (let (v, ne) = eval_iter expr !env_ref
+                                   in env_ref := ne;
+                                   v)) body in
+    List.hd (List.rev result)
   else
     raise InvalidExpr
   (* tsは新しいノードが先頭にきているので後ろから評価*)
