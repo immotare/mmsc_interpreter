@@ -26,6 +26,7 @@ expr:
   | lambda { Lambda($1) }
   | pred { Pred($1) }
   | ifs { If($1) }
+  | proc_call { ProcCall($1) }
 ;
 atom:
   | INT { Mint($1) }
@@ -73,4 +74,7 @@ pred:
 ;
 ifs:
   | LPAREN IF expr expr expr RPAREN { ($3, $4, $5) }
+;
+proc_call:
+  | LPAREN expr body RPAREN { ($2, $3) }
 ;

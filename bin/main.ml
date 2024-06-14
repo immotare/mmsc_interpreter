@@ -1,5 +1,4 @@
 let () = 
-  Printexc.print(fun () ->
     let nodes = ref [] in
     try
       let lexbuf = Lexing.from_channel stdin in
@@ -22,4 +21,3 @@ let () =
       Lexer.EOF -> 
         let result_env = Eval.eval !nodes in
         Eval.print_env result_env
-  )()

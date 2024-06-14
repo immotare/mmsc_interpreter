@@ -27,6 +27,7 @@ type expr =
   | Define of define_stmt
   | Pred of pred
   | If of if_stmt
+  | ProcCall of call_stmt
   and 
   define_stmt =
   | Bind of identifier * expr
@@ -41,6 +42,8 @@ type expr =
   | Eq of expr * expr
   and
   if_stmt = expr * expr * expr
+  and 
+  call_stmt = expr * expr list
 
 type t = expr
 
@@ -105,6 +108,7 @@ end = struct
     | Lambda(a) -> lambda_to_ppnode a
     | If(a) -> if_to_ppnode a
     | Pred(a) -> pred_to_ppnode a
+    | ProcCall(a) -> proc_call_to_ppnode a
     and
     define_to_ppnode a =
     match a with
@@ -144,6 +148,16 @@ end = struct
       to_ppnode expr1;
       to_ppnode expr2;
     ])
+    and
+    proc_call_to_ppnode a =
+    let (proc, params) = a in
+    Node(
+      "ProcCall:",
+      [
+        Node("Proc:", [to_ppnode proc]);
+        Node("Params:", List.map (fun a -> to_ppnode a) params)
+      ]
+    )
 
     let sprint_node e = sprint_ppnodes (to_ppnode e) 0
 end
