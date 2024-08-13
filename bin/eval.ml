@@ -233,9 +233,13 @@ let eval (ts: AstNode.t list) =
   else
     raise InvalidExpr
   (* tsは新しいノードが先頭にきているので後ろから評価*)
-  in List.fold_right (fun nt e -> 
+  in 
+  let val_li = ref [] in
+  let env = (List.fold_right (fun nt e -> 
                       (let (v, ne) = eval_iter nt e in
                       let vs = sprint_value v in
+                      val_li := v::!val_li;
                       Printf.printf "value:%s" vs;
                       print_newline();
-                      ne)) ts ge
+                      ne)) ts ge) in
+  (!val_li, env)

@@ -19,5 +19,5 @@ let () =
       done
     with
       Lexer.EOF -> 
-        let result_env = Eval.eval !nodes in
+        let _, result_env = Eval.eval !nodes in
         Eval.print_env result_env

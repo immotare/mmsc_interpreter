@@ -1,2 +1,6 @@
-(test
- (name test_mmsc_interpreter))
+(tests
+ (names testArith)
+ (libraries alcotest)
+)
+
+(copy_files ../bin/*.{ml,mll,mly})
